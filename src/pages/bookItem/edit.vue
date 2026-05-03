@@ -143,10 +143,10 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
 
     <!-- 单条录入模式 -->
     <template v-if="mode === '单条录入'">
-      <div class="rounded-2xl bg-white p-2 py-5">
-        <wd-form ref="formRef" :model="dataSource">
-          <wd-cell title="礼金类型" center>
-            <wd-radio-group v-model="dataSource.moneyType" shape="button" class="line-height-none">
+      <div class="rounded-2xl bg-white p-5">
+        <uv-form ref="formRef" label-width="100" label-position="top" :model="{ dataSource }" :rules="rules">
+          <uv-form-item label="礼金类型" label-position="left">
+            <wd-radio-group v-model="dataSource.moneyType" shape="button" class="ms-auto line-height-none">
               <wd-radio :value="0">
                 现金
               </wd-radio>
@@ -154,29 +154,32 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
                 实物
               </wd-radio>
             </wd-radio-group>
-          </wd-cell>
-          <wd-input
-            v-model="dataSource.friendName" :disabled="dataSource.id" label="亲友" prop="friendName" placeholder="点击右侧图标选择亲友"
-            :rules="[{ required: true, message: '请输入亲友姓名' }]"
-          >
-            <template #suffix>
-              <div class="i-hugeicons-contact-01 text-base text-gray" @click="onSelectFriend" />
-            </template>
-          </wd-input>
-          <wd-input
-            v-model="dataSource.money" label="礼金" prop="money" placeholder="随礼金额" type="number"
-            :rules="[{ required: true, message: '请填写随礼金额' }]"
-          />
+          </uv-form-item>
+          <uv-form-item label="金额" prop="dataSource.money">
+            <uv-input v-model="dataSource.money" placeholder="礼金或实物金额" type="number" />
+          </uv-form-item>
           <div class="flex justify-around">
             <div v-for="i in presetMoney" :key="i">
-              <wd-button plain size="small" type="info" @click="dataSource.money = i">
+              <wd-button size="small" type="info" @click="dataSource.money = i">
                 {{ i }}
               </wd-button>
             </div>
           </div>
-          <wd-input v-model="dataSource.attendance" label="出席" prop="attendance" type="number" placeholder="参加宴席人数" />
-          <wd-input v-model="dataSource.remarks" label="备注" placeholder="请输入内容" />
-        </wd-form>
+
+          <uv-form-item label="亲友" prop="dataSource.friendName" required>
+            <uv-input v-model="dataSource.friendName" :disabled="!!dataSource.id" placeholder="输入姓名，或点击右侧选择">
+              <template #suffix>
+                <div class="i-hugeicons-contact-01 text-base text-gray" @click="onSelectFriend" />
+              </template>
+            </uv-input>
+          </uv-form-item>
+          <uv-form-item label="出席" prop="dataSource.attendance">
+            <uv-input v-model="dataSource.attendance" placeholder="参加宴席人数" type="number" />
+          </uv-form-item>
+          <uv-form-item label="备注" prop="dataSource.remarks">
+            <uv-textarea v-model="dataSource.remarks" placeholder="添加细节，让回忆更完整" />
+          </uv-form-item>
+        </uv-form>
       </div>
 
       <wd-button block :loading="loading" @click="onSubmit">

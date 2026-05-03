@@ -1,3 +1,5 @@
+import { SolarDay } from 'tyme4ts'
+
 /**
  * 问个好
  *
@@ -86,4 +88,14 @@ export function hasMourningWords(bookName: string | undefined | null) {
   return words.some((word) => {
     return bookName.includes(word)
   })
+}
+
+export function generateLunarDate(date: Date) {
+  const solarDay = SolarDay.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate())
+  const lunarDay = solarDay.getLunarDay()
+  const lunarMonth = lunarDay.getLunarMonth().getName()
+  const lunarDayName = lunarDay.getName()
+  const ganZhi = lunarDay.getYearSixtyCycle().getName()
+  const zodiac = lunarDay.getYearSixtyCycle().getEarthBranch().getZodiac().getName()
+  return `${lunarMonth} ${lunarDayName} ${ganZhi}${zodiac}年`
 }

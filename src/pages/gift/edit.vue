@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import { giftCategory } from '@/constants/app'
 
 definePage({
@@ -30,10 +31,8 @@ const dataSource = ref<Api.Gift>({
   moneyType: 0,
 })
 
-const calendarRef = ref<any>(null)
 const loading = ref(false)
 const formRef = ref()
-const friendSearchKeyword = ref('')
 
 onLoad(async (option) => {
   if (option?.id) {
@@ -43,6 +42,10 @@ onLoad(async (option) => {
     dataSource.value = await apiGiftGet({ id: option.id })
     money.value.type = (dataSource.value.money ?? 0) > 0 ? '收礼' : '送礼'
     money.value.amount = Math.abs(dataSource.value.money || 0)
+  }
+  else {
+    dataSource.value.date = dayjs().format('YYYY-MM-DD')
+    dataSource.value.lunarDate = generateLunarDate(new Date())
   }
 
   if (option?.friendId) {
@@ -65,9 +68,12 @@ const selectedIconStyle = computed(() => {
 })
 
 const onSubmit = async () => {
-  const { valid } = await formRef.value.validate()
-  if (!valid)
+  try {
+    await formRef.value.validate()
+  }
+  catch {
     return
+  }
   loading.value = true
   if (money.value.type === '送礼')
     dataSource.value.money = -Math.abs(money.value.amount || 0)
@@ -97,15 +103,15 @@ const onSelectFriend = () => {
   })
 }
 
-const confirmCalendar = (e: any) => {
-  const { lunar, fulldate } = e
-  dataSource.value.date = fulldate
-  dataSource.value.lunarDate = `${lunar.IMonthCn} ${lunar.IDayCn} ${lunar.gzYear}${lunar.Animal}年`
-  calendarRef.value.close()
+const rules = {
+  'dataSource.date': { required: true, message: '请选择日期时间', trigger: ['blur', 'change'] },
+  'dataSource.friendName': { required: true, message: '请输入亲友姓名', trigger: ['blur', 'change'] },
+  'dataSource.title': { required: true, message: '请填写事由', trigger: ['blur', 'change'] },
 }
 
-const openCalendar = () => {
-  calendarRef.value.open()
+const onDateChange = (e: any) => {
+  dataSource.value.date = e.detail.value
+  dataSource.value.lunarDate = generateLunarDate(new Date(e.detail.value))
 }
 </script>
 
@@ -127,12 +133,34 @@ const openCalendar = () => {
       </div>
     </div>
 
-    <div class="rounded-2xl bg-white px-2 py-5">
-      <wd-form ref="formRef" :model="dataSource" error-type="toast">
-        <wd-segmented v-model:value="money.type" :options="['送礼', '收礼']" />
+    <div class="rounded-2xl bg-white p-5">
+      <uv-form ref="formRef" label-width="100" label-position="top" :model="{ dataSource, money }" :rules="rules">
+        <uv-form-item label="往来方向">
+          <wd-segmented v-model:value="money.type" :options="['送礼', '收礼']" />
+        </uv-form-item>
 
-        <wd-cell title="礼金类型" center>
-          <wd-radio-group v-model="dataSource.moneyType" shape="button" class="line-height-none">
+        <uv-form-item label="日期时间" prop="dataSource.date" required>
+          <div class="w-full">
+            <picker :value="dataSource.date" mode="date" @change="onDateChange">
+              <div class="flex items-center rounded-lg bg-[#efefef] p-2">
+                <div class="mr-2 text-2xl text-red font-bold">
+                  {{ dataSource.date ? dataSource.date.split('-')[2] : '--' }}
+                </div>
+                <div>
+                  <div>{{ dataSource.lunarDate }}</div>
+                  <div class="text-sm text-gray">
+                    {{ dataSource.date }}
+                  </div>
+                </div>
+                <div class="ml-auto">
+                  <wd-icon name="arrow-right" />
+                </div>
+              </div>
+            </picker>
+          </div>
+        </uv-form-item>
+        <uv-form-item label="礼金类型" label-position="left">
+          <wd-radio-group v-model="dataSource.moneyType" shape="button" class="ms-auto line-height-none">
             <wd-radio :value="0">
               现金
             </wd-radio>
@@ -140,28 +168,10 @@ const openCalendar = () => {
               实物
             </wd-radio>
           </wd-radio-group>
-        </wd-cell>
-
-        <wd-input v-model="dataSource.date" label="日期时间" prop="date" placeholder="请选择日期时间" readonly
-                  :rules="[{ required: true, message: '请选择日期时间' }]" @click="openCalendar"
-        >
-          <template #suffix>
-            <div class="i-hugeicons-calendar-01 text-base text-gray" />
-          </template>
-        </wd-input>
-
-        <wd-input v-model="dataSource.friendName" :disabled="dataSource.id" label="亲友" prop="friendName"
-                  placeholder="输入姓名，或点击右侧选择" :rules="[{ required: true, message: '请输入亲友姓名' }]"
-                  @input="(e: any) => friendSearchKeyword = e.value"
-        >
-          <template #suffix>
-            <div class="i-hugeicons-contact-01 text-base text-gray" @click="onSelectFriend" />
-          </template>
-        </wd-input>
-        <wd-input v-model="dataSource.title" label="事由" prop="title" placeholder="例如：结婚"
-                  :rules="[{ required: true, message: '请填写事由' }]"
-        />
-        <wd-input v-model="money.amount" label="金额" prop="money" placeholder="礼金或实物金额" type="number" />
+        </uv-form-item>
+        <uv-form-item label="金额" prop="money.amount">
+          <uv-input v-model="money.amount" placeholder="礼金或实物金额" type="number" />
+        </uv-form-item>
         <div class="flex justify-around">
           <div v-for="i in money.preset" :key="i">
             <wd-button size="small" type="info" @click="money.amount = i">
@@ -169,8 +179,22 @@ const openCalendar = () => {
             </wd-button>
           </div>
         </div>
-        <wd-input v-model="dataSource.remarks" label="备注" placeholder="添加细节，让回忆更完整" />
-      </wd-form>
+
+        <uv-form-item label="亲友" prop="dataSource.friendName" required>
+          <uv-input v-model="dataSource.friendName" :disabled="!!dataSource.id" placeholder="输入姓名，或点击右侧选择">
+            <template #suffix>
+              <div class="i-hugeicons-contact-01 text-base text-gray" @click="onSelectFriend" />
+            </template>
+          </uv-input>
+        </uv-form-item>
+        <uv-form-item label="事由" prop="dataSource.title" required>
+          <uv-input v-model="dataSource.title" placeholder="例如：结婚" />
+        </uv-form-item>
+
+        <uv-form-item label="备注" prop="dataSource.remarks">
+          <uv-textarea v-model="dataSource.remarks" placeholder="添加细节，让回忆更完整" />
+        </uv-form-item>
+      </uv-form>
     </div>
     <wd-button block :loading="loading" @click="onSubmit">
       保存
@@ -178,10 +202,9 @@ const openCalendar = () => {
     <div class="text-xs text-gray">
       点亮人情往来的记忆微光，让每一次记账都成为温情的诗行。
     </div>
-    <uv-calendars ref="calendarRef" lunar color="#F87171" confirm-color="#F87171" :date="dataSource.date"
-                  :close-on-click-overlay="false" @confirm="confirmCalendar"
-    />
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

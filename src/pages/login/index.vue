@@ -178,7 +178,7 @@ const sendVerifyEmail = async () => {
                    class="glass-input mr-3 w-full border border-white/50 rounded-2xl bg-white/30 py-[8px] pl-12 pr-5 text-base text-[#1e293b]/80 backdrop-blur-12 transition-all duration-400 group-focus-within:border-white/70 group-focus-within:bg-white/45 group-focus-within:shadow-[0_0_0_3px_rgba(248,113,113,0.12),inset_0_1px_2px_rgba(255,255,255,0.4)] group-focus-within:outline-none placeholder-[#94a3b8]/60"
             >
             <div class="glass-send-btn flex-shrink-0 border border-white/40 rounded-2xl bg-[#f87171]/75 p-[8px] text-4 text-white backdrop-blur-8 transition-all duration-300" :loading="sending" :disabled="sending || countdown > 0" @click="sendVerifyEmail">
-              {{ loading ? '发送中...' : countdown > 0 ? `${countdown}后可重发` : '发送验证码' }}
+              {{ loading ? '发送中...' : countdown > 0 ? `${countdown}后重试` : '发送验证码' }}
             </div>
           </div>
         </div>
