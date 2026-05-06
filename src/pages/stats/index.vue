@@ -13,6 +13,63 @@ const wordData = ref({})
 const roseData = ref({})
 const radarData = ref({})
 
+// 年份筛选
+const yearOptions = ['今年', '去年', '自定义']
+const selectedYear = ref('今年')
+const customStartDate = ref<number>()
+const customEndDate = ref<number>()
+
+// 获取日期范围参数
+function getDateParams() {
+  const now = dayjs()
+  switch (selectedYear.value) {
+    case '今年':
+      return {
+        startDate: now.startOf('year').format('YYYY-MM-DD'),
+        endDate: now.endOf('year').format('YYYY-MM-DD'),
+      }
+    case '去年':
+      return {
+        startDate: now.subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
+        endDate: now.subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
+      }
+    case '自定义':
+      if (customStartDate.value && customEndDate.value) {
+        return {
+          startDate: dayjs(customStartDate.value).startOf('month').format('YYYY-MM-DD'),
+          endDate: dayjs(customEndDate.value).endOf('month').format('YYYY-MM-DD'),
+        }
+      }
+      return undefined
+    default:
+      return undefined
+  }
+}
+
+// 选择年份
+function onYearChange({ value }: { value: string }) {
+  selectedYear.value = value
+  if (value !== '自定义') {
+    loadData()
+  }
+}
+
+// 开始日期确认
+function onStartConfirm({ value }: { value: number }) {
+  customStartDate.value = value
+  if (customStartDate.value && customEndDate.value) {
+    loadData()
+  }
+}
+
+// 结束日期确认
+function onEndConfirm({ value }: { value: number }) {
+  customEndDate.value = value
+  if (customStartDate.value && customEndDate.value) {
+    loadData()
+  }
+}
+
 const chatOpt = {
   color: ['#F87171', '#2DD4BF', '#FAC858', '#EE6666', '#73C0DE', '#1890FF', '#FC8452', '#9A60B4', '#EA7CCC'],
   dataLabel: false,
@@ -51,8 +108,9 @@ const statsData = ref({
   outTotal: 0,
 })
 
-onShow(async () => {
-  const { bookItems, gifts } = await apiStatsDashboardGet()
+async function loadData() {
+  const params = getDateParams()
+  const { bookItems, gifts } = await apiStatsDashboardGet(params)
 
   const rawData: { friendName: string, money: number, title: string, date: string, type: string }[] = []
 
@@ -192,6 +250,10 @@ onShow(async () => {
       textSize: 12 + Math.min(count, 10) * 2, // 词频越高字号越大
     })),
   }
+}
+
+onShow(() => {
+  loadData()
 })
 </script>
 
@@ -199,8 +261,40 @@ onShow(async () => {
   <div class="bg-contain bg-no-repeat" :style="{ 'background-image': `url(${serviceUrl}/oss/assets/bg/bg_friend.png)` }">
     <safe-area-inset-top />
     <div class="mx-3 space-y-3">
-      <div class="text-2xl text-red font-bold">
-        统计
+      <!-- 标题和筛选 -->
+      <div class="flex items-center justify-between">
+        <div class="text-2xl text-red font-bold">
+          统计
+        </div>
+        <div class="w-52">
+          <wd-segmented
+            :value="selectedYear"
+            :options="yearOptions"
+            custom-class="!bg-white"
+            @change="onYearChange"
+          />
+        </div>
+      </div>
+
+      <!-- 自定义日期选择 -->
+      <div v-if="selectedYear === '自定义'" class="rounded-2xl bg-white px-4">
+        <div class="w-full flex items-center gap-3">
+          <wd-datetime-picker
+            v-model="customStartDate"
+            align-right
+            type="year-month"
+            placeholder="开始时间"
+            @confirm="onStartConfirm"
+          />
+          <span class="mx-auto text-gray-400">至</span>
+          <wd-datetime-picker
+            v-model="customEndDate"
+            align-right
+            type="year-month"
+            placeholder="结束时间"
+            @confirm="onEndConfirm"
+          />
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-5 rounded-2xl bg-white p-5">
@@ -285,4 +379,10 @@ onShow(async () => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.wd-segmented__item.is-active) {
+  background: #f87171;
+  color: #fff;
+  border-radius: 12px;
+}
+</style>
