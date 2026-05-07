@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PopoverMenuItem } from '@wot-ui/ui/components/wd-popover/types'
 import { useDialog, useQueue } from '@wot-ui/ui'
 import dayjs from 'dayjs'
 
@@ -140,7 +139,7 @@ const onAdd = () => {
     url: `/pages/gift/edit?friendId=${friend.value.id}&friendName=${friend.value.name}`,
   })
 }
-const menu = ref<PopoverMenuItem[]>([
+const menu = ref<any[]>([
   {
     iconClass: 'edit-1',
     content: '编辑亲友',
@@ -229,7 +228,7 @@ function onMenuClick(e: any) {
     </div>
 
     <div v-if="giftList?.length === 0 && !loading" class="my-24">
-      <uv-empty text="还没有人情往来记录哦~" mode="favor" />
+      <wd-empty tip="还没有人情往来记录哦~" />
     </div>
     <div class="my-5 space-y-3">
       <div v-for="(gift, index) in giftList" :key="index" class="cu-timeline">

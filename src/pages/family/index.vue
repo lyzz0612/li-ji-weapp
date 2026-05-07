@@ -139,7 +139,7 @@ onShareAppMessage(() => {
           </template>
         </div>
         <div class="mt-3">
-          <wd-button block icon="add" open-type="share">
+          <wd-button icon="add" open-type="share" round block>
             邀请家庭成员
           </wd-button>
         </div>
@@ -182,7 +182,7 @@ onShareAppMessage(() => {
         </div>
 
         <div class="w-full">
-          <wd-button block :loading="loading" @click="onCreate">
+          <wd-button :loading="loading" round block @click="onCreate">
             与家人共享
           </wd-button>
         </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { FormInstance, FormSchema } from '@wot-ui/ui/components/wd-form/types'
+
 definePage({
   style: {
     navigationBarTitleText: '收礼记录',
@@ -7,7 +9,7 @@ definePage({
 
 const loading = ref(false)
 const dataSource = ref<Api.BookItem>({})
-const formRef = ref()
+const formRef = ref<FormInstance>()
 
 // 模式：单条录入，批量录入
 const mode = ref<'单条录入' | '批量录入'>('单条录入')
@@ -38,18 +40,32 @@ onLoad(async (option) => {
 
 // 单条提交
 const onSubmit = async () => {
-  const { valid } = await formRef.value.validate()
-  if (!valid)
-    return
-  loading.value = true
-  const api = dataSource.value.id ? apiBookItemPut : apiBookItemPost
-  await api(dataSource.value)
-  uni.navigateBack()
-  uni.showToast({
-    title: '保存成功',
-    icon: 'none',
+  formRef.value?.validate().then(async ({ valid }: { valid: boolean }) => {
+    if (valid) {
+      loading.value = true
+      const api = dataSource.value.id ? apiBookItemPut : apiBookItemPost
+      await api(dataSource.value)
+      uni.navigateBack()
+      uni.showToast({
+        title: '保存成功',
+        icon: 'none',
+      })
+      loading.value = false
+    }
   })
-  loading.value = false
+}
+
+const rules: FormSchema = {
+  validate(formModel) {
+    const issues = []
+    if (!formModel.friendName) {
+      issues.push({ path: ['friendName'], message: '请输入亲友姓名' })
+    }
+    return issues
+  },
+  isRequired(path: string) {
+    return new Set(['friendName']).has(path)
+  },
 }
 
 // 选择亲友（单条模式）
@@ -143,9 +159,9 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
 
     <!-- 单条录入模式 -->
     <template v-if="mode === '单条录入'">
-      <div class="rounded-2xl bg-white p-5">
-        <uv-form ref="formRef" label-width="100" label-position="top" :model="{ dataSource }" :rules="rules">
-          <uv-form-item label="礼金类型" label-position="left">
+      <div class="rounded-2xl bg-white p-3">
+        <wd-form ref="formRef" layout="vertical" :model="dataSource" center :schema="rules">
+          <wd-form-item title="礼金类型" layout="horizontal" value-align="right">
             <wd-radio-group v-model="dataSource.moneyType" shape="button" class="ms-auto line-height-none">
               <wd-radio :value="0">
                 现金
@@ -154,10 +170,10 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
                 实物
               </wd-radio>
             </wd-radio-group>
-          </uv-form-item>
-          <uv-form-item label="金额" prop="dataSource.money">
-            <uv-input v-model="dataSource.money" placeholder="礼金或实物金额" type="number" />
-          </uv-form-item>
+          </wd-form-item>
+          <wd-form-item title="金额" prop="money">
+            <wd-input v-model="dataSource.money" placeholder="礼金或实物金额" type="number" :compact="false" />
+          </wd-form-item>
           <div class="flex justify-around">
             <div v-for="i in presetMoney" :key="i">
               <wd-button size="small" type="info" @click="dataSource.money = i">
@@ -165,24 +181,23 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
               </wd-button>
             </div>
           </div>
-
-          <uv-form-item label="亲友" prop="dataSource.friendName" required>
-            <uv-input v-model="dataSource.friendName" :disabled="!!dataSource.id" placeholder="输入姓名，或点击右侧选择">
+          <wd-form-item title="亲友" prop="friendName" required>
+            <wd-input v-model="dataSource.friendName" :disabled="!!dataSource.id" placeholder="输入姓名，或点击右侧选择" :compact="false">
               <template #suffix>
                 <div class="i-hugeicons-contact-01 text-base text-gray" @click="onSelectFriend" />
               </template>
-            </uv-input>
-          </uv-form-item>
-          <uv-form-item label="出席" prop="dataSource.attendance">
-            <uv-input v-model="dataSource.attendance" placeholder="参加宴席人数" type="number" />
-          </uv-form-item>
-          <uv-form-item label="备注" prop="dataSource.remarks">
-            <uv-textarea v-model="dataSource.remarks" placeholder="添加细节，让回忆更完整" />
-          </uv-form-item>
-        </uv-form>
+            </wd-input>
+          </wd-form-item>
+          <wd-form-item title="出席" prop="attendance">
+            <wd-input v-model="dataSource.attendance" placeholder="参加宴席人数" type="number" :compact="false" />
+          </wd-form-item>
+          <wd-form-item title="备注" prop="remarks">
+            <wd-textarea v-model="dataSource.remarks" placeholder="添加细节，让回忆更完整" :compact="false" />
+          </wd-form-item>
+        </wd-form>
       </div>
 
-      <wd-button block :loading="loading" @click="onSubmit">
+      <wd-button round block :loading="loading" @click="onSubmit">
         保存
       </wd-button>
     </template>
@@ -338,7 +353,7 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
 
   <!-- 固定在底部的批量保存按钮 -->
   <div v-if="mode === '批量录入'" class="fixed bottom-12 left-0 right-0 p-3">
-    <wd-button block :loading="loading" :disabled="batchList.length === 0" @click="onBatchSubmit">
+    <wd-button round block :loading="loading" :disabled="batchList.length === 0" @click="onBatchSubmit">
       批量保存
     </wd-button>
     <uv-safe-bottom />

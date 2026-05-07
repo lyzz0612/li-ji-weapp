@@ -89,13 +89,13 @@ const onFriendClick = (id?: string) => {
       />
     </div>
     <div v-if="friendsList?.length === 0" class="my-24">
-      <uv-empty text="还没有亲友记录哦~" mode="favor">
+      <wd-empty tip="还没有亲友记录哦~">
         <div class="mt-6">
-          <wd-button class="mt-6" type="primary" @click="addNew()">
+          <wd-button class="mt-6" round @click="addNew()">
             添加亲友
           </wd-button>
         </div>
-      </uv-empty>
+      </wd-empty>
     </div>
 
     <uv-index-list v-else :index-list="friendsList?.map(item => item.index) || []">

@@ -35,7 +35,7 @@ onLoad((option) => {
       {{ error || '啊哦，出现了一个小错误，请稍后再试~' }}
     </div>
     <div class="min-w-24">
-      <wd-button @click="onRetry">
+      <wd-button round @click="onRetry">
         重启应用
       </wd-button>
     </div>

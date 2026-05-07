@@ -5,7 +5,7 @@
 <template>
   <div>
     <!-- template -->
-    <uv-empty mode="page" text="Coming soon" />
+    <wd-empty icon="no-wifi" tip="Coming soon" />
   </div>
 </template>
 

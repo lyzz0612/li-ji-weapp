@@ -158,12 +158,12 @@ onLoad(async () => {
     <div class="fixed bottom-0 w-full rounded-t-xl bg-white pt-6">
       <div class="mx-3">
         <!-- #ifdef MP-WEIXIN -->
-        <wd-button v-if="platform === 'ios'" block loading-color="#F87171" pen-type="contact" @click="fk_apple">
+        <wd-button v-if="platform === 'ios'" round block loading-color="#F87171" pen-type="contact" @click="fk_apple">
           <div class="font-bold">
             暂不支持在 iOS 系统上使用
           </div>
         </wd-button>
-        <wd-button v-else block :loading="loading" loading-color="#F87171" @click="jsapiPay">
+        <wd-button v-else round block :loading="loading" loading-color="#F87171" @click="jsapiPay">
           <div class="font-bold">
             <span>￥</span>
             <span>{{ price }}</span>
@@ -172,7 +172,7 @@ onLoad(async () => {
         </wd-button>
         <!-- #endif -->
         <!-- #ifdef H5 -->
-        <wd-button block :loading="loading" loading-color="#F87171" @click="h5Pay">
+        <wd-button round block :loading="loading" loading-color="#F87171" @click="h5Pay">
           <div class="font-bold">
             <span>￥</span>
             <span>{{ price }}</span>

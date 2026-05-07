@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { FormInstance, FormSchema } from '@wot-ui/ui/components/wd-form/types'
+
 definePage({
   style: {
     navigationBarTitleText: '亲友',
@@ -17,61 +19,67 @@ onLoad(async (option) => {
   }
 })
 const loading = ref(false)
-const formRef = ref()
+const formRef = ref<FormInstance>()
 const onSubmit = async () => {
-  try {
-    await formRef.value.validate()
-  }
-  catch {
-    return
-  }
-  loading.value = true
-  const api = dataSource.value.id ? apiFriendPut : apiFriendPost
-  await api(dataSource.value)
-  uni.navigateBack()
-  uni.showToast({
-    title: '保存成功',
-    icon: 'none',
+  formRef.value?.validate().then(async ({ valid }: { valid: boolean }) => {
+    if (valid) {
+      loading.value = true
+      const api = dataSource.value.id ? apiFriendPut : apiFriendPost
+      await api(dataSource.value)
+      uni.navigateBack()
+      uni.showToast({
+        title: '保存成功',
+        icon: 'none',
+      })
+      loading.value = false
+    }
   })
-  loading.value = false
 }
 
-const rules = {
-  'dataSource.name': { required: true, message: '请填写亲友姓名', trigger: ['blur', 'change'] },
+const rules: FormSchema = {
+  validate(formModel) {
+    const issues = []
+    if (!formModel.name) {
+      issues.push({ path: ['name'], message: '请填写亲友姓名' })
+    }
+    return issues
+  },
+  isRequired(path: string) {
+    return new Set(['name']).has(path)
+  },
 }
 </script>
 
 <template>
   <div class="mx-3 space-y-3">
-    <div class="rounded-2xl bg-white p-5">
-      <uv-form ref="formRef" label-width="100" label-position="top" :model="{ dataSource }" :rules="rules">
-        <uv-form-item label="姓名" prop="dataSource.name" required>
-          <uv-input v-model="dataSource.name" clearable placeholder="请输入姓名" />
-        </uv-form-item>
-        <uv-form-item label="关系" prop="dataSource.relation">
-          <uv-input v-model="dataSource.relation" placeholder="例如：舅舅" />
-        </uv-form-item>
-        <uv-form-item label="标签" prop="dataSource.tagList">
+    <div class="rounded-2xl bg-white p-2">
+      <wd-form ref="formRef" layout="vertical" :model="dataSource" center :schema="rules">
+        <wd-form-item title="姓名" prop="name" required>
+          <wd-input v-model="dataSource.name" clearable placeholder="请输入姓名" :compact="false" />
+        </wd-form-item>
+        <wd-form-item title="关系" prop="relation">
+          <wd-input v-model="dataSource.relation" placeholder="例如：舅舅" :compact="false" />
+        </wd-form-item>
+        <wd-form-item title="标签" prop="tagList">
           <div class="w-full">
             <wd-select-picker
               v-model="dataSource.tagList"
               :columns="useAuthStore().friendTagPickerColumns"
-            >
-              <div class="friend-tag-trigger">
-                <div class="friend-tag-trigger__value" :class="{ 'is-placeholder': !dataSource.tagList?.length }">
-                  {{ dataSource.tagList?.length ? dataSource.tagList.join('、') : '请选择标签' }}
-                </div>
-                <wd-icon name="arrow-right" />
+            />
+            <div class="flex items-center rounded-lg bg-[#F2F3F5] p-2">
+              <div class="friend-tag-trigger__value" :class="{ 'is-placeholder': !dataSource.tagList?.length }">
+                {{ dataSource.tagList?.length ? dataSource.tagList.join('、') : '请选择标签' }}
               </div>
-            </wd-select-picker>
+              <wd-icon name="right" />
+            </div>
           </div>
-        </uv-form-item>
-        <uv-form-item label="备注" prop="dataSource.remarks">
-          <uv-textarea v-model="dataSource.remarks" placeholder="请输入内容" />
-        </uv-form-item>
-      </uv-form>
+        </wd-form-item>
+        <wd-form-item title="备注">
+          <wd-textarea v-model="dataSource.remarks" placeholder="请输入内容" :compact="false" />
+        </wd-form-item>
+      </wd-form>
     </div>
-    <wd-button block :loading="loading" @click="onSubmit">
+    <wd-button :loading="loading" round block @click="onSubmit">
       保存
     </wd-button>
   </div>

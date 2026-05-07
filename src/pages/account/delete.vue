@@ -102,7 +102,7 @@ const showDeleteConfirm = () => {
 
     <!-- 操作按钮 -->
     <div class="p-5 space-y-3">
-      <wd-button block size="large" :loading="loading" @click="showDeleteConfirm">
+      <wd-button round block size="large" :loading="loading" @click="showDeleteConfirm">
         确认注销账号
       </wd-button>
     </div>

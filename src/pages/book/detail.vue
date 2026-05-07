@@ -180,7 +180,7 @@ const onBookDel = () => {
   })
 }
 
-const menu = ref<Array<Record<string, any>>>([
+const menu = ref<any[]>([
   {
     iconClass: 'edit-1',
     content: '编辑礼簿',
@@ -300,13 +300,13 @@ function onMenuClick(e: any) {
             </div>
           </div>
           <div v-else class="my-24">
-            <uv-empty text="还没有人情往来记录哦~" mode="favor">
+            <wd-empty tip="还没有人情往来记录哦~" mode="favor">
               <div class="mt-6">
-                <wd-button class="mt-6" type="primary" @click="onGiftAdd()">
+                <wd-button class="mt-6" round @click="onGiftAdd()">
                   添加收礼
                 </wd-button>
               </div>
-            </uv-empty>
+            </wd-empty>
           </div>
         </template>
         <template v-else>

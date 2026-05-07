@@ -127,7 +127,7 @@ const navigateToFriendDetailPage = () => {
 
       <div class="mt-6 w-full flex space-x-4">
         <div class="w-40">
-          <wd-button plain @click="onDel">
+          <wd-button variant="plain" @click="onDel">
             删除
           </wd-button>
         </div>

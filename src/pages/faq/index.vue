@@ -46,7 +46,7 @@ definePage({
 
     <div class="fixed bottom-8 right-0 w-full">
       <div class="mx-6">
-        <wd-button block open-type="contact" icon="service">
+        <wd-button open-type="contact" icon="service" round block>
           在线客服
         </wd-button>
       </div>

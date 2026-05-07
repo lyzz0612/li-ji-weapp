@@ -57,7 +57,7 @@ const onDel = () => {
       />
     </div>
     <div class="mt-3">
-      <wd-button icon="add" block @click="openPopup()">
+      <wd-button icon="add" round block @click="openPopup()">
         添加
       </wd-button>
     </div>
@@ -71,12 +71,12 @@ const onDel = () => {
         </wd-form>
         <div class="my-5 w-full flex space-x-4">
           <div v-if="dataSource.id" class="w-40">
-            <wd-button plain @click="onDel">
+            <wd-button plain round @click="onDel">
               删除
             </wd-button>
           </div>
           <div class="w-full">
-            <wd-button block @click="onSave">
+            <wd-button round block @click="onSave">
               保存
             </wd-button>
           </div>

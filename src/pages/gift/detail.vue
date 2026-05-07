@@ -131,12 +131,12 @@ const navigateToFriendDetailPage = () => {
 
       <div class="mt-6 w-full flex space-x-4">
         <div class="w-40">
-          <wd-button plain @click="onDel">
+          <wd-button variant="plain" round @click="onDel">
             删除
           </wd-button>
         </div>
         <div class="w-full">
-          <wd-button block @click="onEdit">
+          <wd-button round block @click="onEdit">
             编辑
           </wd-button>
         </div>

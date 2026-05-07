@@ -97,10 +97,10 @@ const onReject = () => {
         </div>
       </div>
       <div class="mt-10 flex justify-around">
-        <wd-button plain block @click="onReject">
+        <wd-button variant="plain" round block @click="onReject">
           拒绝
         </wd-button>
-        <wd-button block @click="onAgree">
+        <wd-button round block @click="onAgree">
           同意
         </wd-button>
       </div>

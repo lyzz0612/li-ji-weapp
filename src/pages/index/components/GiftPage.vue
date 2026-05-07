@@ -177,13 +177,13 @@ defineExpose({
         </div>
       </div>
       <div v-else class="my-24">
-        <uv-empty text="还没有人情往来记录哦~" mode="favor">
+        <wd-empty tip="还没有人情往来记录哦~">
           <div class="mt-6">
             <wd-button class="mt-6" type="primary" @click="onAdd()">
               添加记录
             </wd-button>
           </div>
-        </uv-empty>
+        </wd-empty>
       </div>
     </template>
     <div v-else class="m-2">

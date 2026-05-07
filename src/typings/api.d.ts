@@ -67,7 +67,7 @@ declare namespace Api {
      * 当前页集合
      * @type {Array<T>}
      */
-    items?: Array<T> | null
+    items?: Array<T>
   }
 
   interface PaginationQuery {
@@ -164,7 +164,7 @@ declare namespace Api {
      * @type {string}
      * @memberof User
      */
-    updateTime?: string | null
+    updateTime?: string
   }
 
   interface UserFamily {
@@ -177,22 +177,22 @@ declare namespace Api {
      * 昵称
      * @type {string}
      */
-    nickName?: string | null
+    nickName?: string
     /**
      * 头像
      * @type {string}
      */
-    avatar?: string | null
+    avatar?: string
     /**
      * 用户在该家庭组中的角色（如管理员、成员）
      * @type {string}
      */
-    role?: string | null
+    role?: string
     /**
      * 家庭GUID
      * @type {string}
      */
-    familyId?: string | null
+    familyId?: string
     /**
      * 账号类型
      */
@@ -217,7 +217,7 @@ declare namespace Api {
      * @type {string}
      * @memberof UserSubscription
      */
-    updateTime?: string | null
+    updateTime?: string
     /**
      * 商户订单号
      * @type {string}
@@ -229,13 +229,13 @@ declare namespace Api {
      * @type {string}
      * @memberof UserSubscription
      */
-    transactionId?: string | null
+    transactionId?: string
     /**
      * 交易状态
      * @type {string}
      * @memberof UserSubscription
      */
-    tradeState?: string | null
+    tradeState?: string
     /**
      * 金额
      * @type {number}
@@ -247,7 +247,7 @@ declare namespace Api {
      * @type {number}
      * @memberof UserSubscription
      */
-    payerTotal?: number | null
+    payerTotal?: number
     /**
      * 用户Id
      * @type {string}
@@ -261,12 +261,12 @@ declare namespace Api {
      * ID
      * @type {string}
      */
-    id?: string
+    id: string
     /**
      * 标题
      * @type {string}
      */
-    title?: string | null
+    title: string
     /**
      * 成本
      * @type {number}
@@ -276,17 +276,17 @@ declare namespace Api {
      * 备注
      * @type {string}
      */
-    remarks?: string | null
+    remarks?: string
     /**
      * 日期
      * @type {string}
      */
-    date?: string
+    date: string
     /**
      * 农历
      * @type {string}
      */
-    lunarDate?: string | null
+    lunarDate: string
     /**
      * 出席人数
      * @type {number}
@@ -327,37 +327,37 @@ declare namespace Api {
      * @type {string}
      * @memberof Friend
      */
-    updateTime?: string | null
+    updateTime?: string
     /**
      * 姓名
      * @type {string}
      * @memberof Friend
      */
-    name?: string | null
+    name?: string
     /**
      * 首字母
      * @type {string}
      * @memberof Friend
      */
-    firstLetter?: string | null
+    firstLetter?: string
     /**
      * 标签
      * @type {Array<string>}
      * @memberof Friend
      */
-    tagList?: Array<string> | null
+    tagList?: Array<string>
     /**
      * 备注
      * @type {string}
      * @memberof Friend
      */
-    remarks?: string | null
+    remarks?: string
     /**
      * 关系
      * @type {string}
      * @memberof Friend
      */
-    relation?: string | null
+    relation?: string
   }
 
   interface FriendTag {
@@ -393,7 +393,7 @@ declare namespace Api {
      * @type {string}
      * @memberof BookItem
      */
-    updateTime?: string | null
+    updateTime?: string
     /**
      * 金额
      * @type {number}
@@ -417,7 +417,7 @@ declare namespace Api {
      * @type {string}
      * @memberof BookItem
      */
-    remarks?: string | null
+    remarks?: string
     /**
      * 礼簿Id
      * @type {string}
@@ -429,7 +429,7 @@ declare namespace Api {
      * @type {string}
      * @memberof BookItem
      */
-    title?: string | null
+    title?: string
     /**
      * 日期
      * @type {string}
@@ -441,7 +441,7 @@ declare namespace Api {
      * @type {string}
      * @memberof BookItem
      */
-    lunarDate?: string | null
+    lunarDate?: string
     /**
      * 亲友Id
      * @type {string}
@@ -453,9 +453,9 @@ declare namespace Api {
      * @type {string}
      * @memberof BookItem
      */
-    friendName?: string | null
-    friendRelation?: string | null
-    friendTagList?: Array<string> | null
+    friendName?: string
+    friendRelation?: string
+    friendTagList?: Array<string>
   }
 
   interface Gift {
@@ -476,7 +476,7 @@ declare namespace Api {
      * @type {string}
      * @memberof Gift
      */
-    updateTime?: string | null
+    updateTime?: string
     /**
      * 主题
      * @type {string}
@@ -500,25 +500,25 @@ declare namespace Api {
      * @type {string}
      * @memberof Gift
      */
-    icon?: string | null
+    icon?: string
     /**
      * 备注
      * @type {string}
      * @memberof Gift
      */
-    remarks?: string | null
+    remarks?: string
     /**
      * 日期
      * @type {string}
      * @memberof Gift
      */
-    date?: string
+    date: string
     /**
      * 农历
      * @type {string}
      * @memberof Gift
      */
-    lunarDate?: string | null
+    lunarDate: string
     /**
      * 亲友Id
      * @type {string}
@@ -530,9 +530,10 @@ declare namespace Api {
      * @type {string}
      * @memberof Gift
      */
-    friendName?: string | null
-    friendRelation?: string | null
-    friendTagList?: Array<string> | null
+    friendName?: string
+    friendRelation?: string
+    friendTagList?: Array<string>
+    payway?: string
   }
 
   interface FriendGifts {
@@ -615,7 +616,7 @@ declare namespace Api {
      * @type {string}
      * @memberof SubscriptionPlan
      */
-    title?: string | null
+    title?: string
     /**
      * 价格
      * @type {number}
@@ -627,7 +628,7 @@ declare namespace Api {
      * @type {string}
      * @memberof SubscriptionPlan
      */
-    desc?: string | null
+    desc?: string
   }
 
   interface SearchOutput {

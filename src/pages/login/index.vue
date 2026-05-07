@@ -146,7 +146,7 @@ const sendVerifyEmail = async () => {
 
         <!-- 登录按钮 -->
         <div class="pt-2">
-          <wd-button block :loading="loading" custom-class="glass-button" @click="onLogin">
+          <wd-button round block :loading="loading" custom-class="glass-button" @click="onLogin">
             登 录
           </wd-button>
         </div>
@@ -198,7 +198,7 @@ const sendVerifyEmail = async () => {
 
         <!-- 登录按钮 -->
         <div class="pt-2">
-          <wd-button block :loading="loading" custom-class="glass-button" @click="onSignup">
+          <wd-button round block :loading="loading" custom-class="glass-button" @click="onSignup">
             注 册
           </wd-button>
         </div>

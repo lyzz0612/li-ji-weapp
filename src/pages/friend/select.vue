@@ -78,7 +78,7 @@ function searchCancel() {
     </div>
     <div class="grow">
       <div v-if="friendsList?.length === 0" class="my-24">
-        <uv-empty />
+        <wd-empty />
       </div>
       <wd-index-bar sticky>
         <div v-for="item in friendsList" :key="item.index">

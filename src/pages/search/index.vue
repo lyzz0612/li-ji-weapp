@@ -108,7 +108,7 @@ const onMoreClick = (type?: string) => {
           </wd-tag>
         </div>
         <div v-show="!searchHistory?.length" class="py-12">
-          <uv-empty />
+          <wd-empty />
         </div>
       </div>
       <div v-else class="pb-4">
@@ -116,7 +116,7 @@ const onMoreClick = (type?: string) => {
           <wd-loading color="#f87171" />
         </div>
         <div v-show="searchEmpty" class="py-16">
-          <uv-empty mode="search" />
+          <wd-empty icon="no-result" />
         </div>
         <div v-show="data?.friends?.length" class="mt-2 bg-white p-3">
           <div class="mb-2 flex items-center justify-between">
