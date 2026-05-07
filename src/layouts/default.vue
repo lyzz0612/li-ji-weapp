@@ -1,6 +1,6 @@
 <template>
   <wd-toast />
-  <wd-message-box />
+  <wd-dialog />
   <wd-notify />
   <div class="h-full flex flex-col font-sans">
     <div class="grow">

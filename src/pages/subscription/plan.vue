@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useDialog } from '@wot-ui/ui'
 import { storeToRefs } from 'pinia'
-import { useMessage } from 'wot-design-uni'
 import VipEquity from './components/VipEquity.vue'
 
 definePage({
@@ -11,7 +11,7 @@ definePage({
 })
 
 const serviceUrl = import.meta.env.VITE_SERVICE_URL
-const message = useMessage()
+const dialog = useDialog()
 const loading = ref(false)
 const { userInfo } = storeToRefs(useAuthStore())
 const subscriptionPlan = ref<Api.SubscriptionPlan>()
@@ -63,30 +63,30 @@ const h5Pay = async () => {
 }
 
 const couponPay = async () => {
-  message
-    .prompt({
-      title: '优惠码兑换',
-      inputPlaceholder: '请输入优惠码',
-      inputPattern: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-      inputError: '无效的优惠码',
-    })
-    .then(async ({ action, value }) => {
-      if (action === 'confirm') {
-        uni.showLoading({
-          title: '兑换中...',
-        })
-        userInfo.value = await apiUserMemberStatusPut({
-          couponCode: value,
-        })
-        uni.redirectTo({
-          url: '/pages/subscription/index',
-        })
-        uni.showToast({
-          title: '兑换成功!',
-          icon: 'success',
-        })
-      }
-    })
+  dialog.prompt({
+    title: '优惠码兑换',
+    inputProps: {
+      placeholder: '请输入优惠码',
+    },
+    inputPattern: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+    inputError: '无效的优惠码',
+  }).then(async ({ action, value }) => {
+    if (action === 'confirm') {
+      uni.showLoading({
+        title: '兑换中...',
+      })
+      userInfo.value = await apiUserMemberStatusPut({
+        couponCode: value,
+      })
+      uni.redirectTo({
+        url: '/pages/subscription/index',
+      })
+      uni.showToast({
+        title: '兑换成功!',
+        icon: 'success',
+      })
+    }
+  })
 }
 
 let clickCount = 0
@@ -186,7 +186,7 @@ onLoad(async () => {
       </div>
       <uv-safe-bottom />
     </div>
-    <wd-message-box />
+    <wd-dialog />
   </div>
 </template>
 

@@ -372,7 +372,7 @@ declare namespace Api {
      * @type {string}
      * @memberof FriendTag
      */
-    name?: string | null
+    name?: string
   }
 
   interface BookItem {

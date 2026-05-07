@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useDialog, useNotify } from '@wot-ui/ui'
 import { storeToRefs } from 'pinia'
-import { useMessage, useNotify } from 'wot-design-uni'
 import { friendCategory } from '@/constants/app'
 
 definePage({
@@ -10,7 +10,7 @@ definePage({
 })
 
 const { showNotify } = useNotify()
-const message = useMessage()
+const dialog = useDialog()
 const popupShow = ref(false)
 const dataSource = ref<Api.FriendTag>({})
 const { friendTags } = storeToRefs(useAuthStore())
@@ -36,7 +36,7 @@ const onSave = async () => {
 }
 
 const onDel = () => {
-  message.confirm({
+  dialog.confirm({
     msg: '此操作无法恢复，确定删除？',
     title: '删除亲友标签',
   }).then(async () => {

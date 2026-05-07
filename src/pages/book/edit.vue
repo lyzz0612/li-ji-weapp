@@ -66,7 +66,7 @@ const onDateChange = (e: any) => {
         <uv-form-item label="日期时间" prop="dataSource.date" required>
           <div class="w-full">
             <picker :value="dataSource.date" mode="date" @change="onDateChange">
-              <div class="flex items-center rounded-lg bg-[#efefef] p-2">
+              <div class="flex items-center rounded-lg bg-[#F7F8FA] p-2">
                 <div class="mr-2 text-2xl text-red font-bold">
                   {{ dataSource.date ? dataSource.date.split('-')[2] : '--' }}
                 </div>

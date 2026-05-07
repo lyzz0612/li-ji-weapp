@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useDialog, useQueue } from '@wot-ui/ui'
 import { usePagination } from 'alova/client'
 import { storeToRefs } from 'pinia'
-import { useMessage, useQueue } from 'wot-design-uni'
 
 definePage({
   style: {
@@ -17,7 +17,7 @@ const search = ref({
   order: 'asc',
   keyword: '',
 })
-const message = useMessage()
+const dialog = useDialog()
 const book = ref<Api.Book>({})
 const sortList = ref([
   { label: '默认', field: 'id', value: 1 },
@@ -148,7 +148,7 @@ const onBookExport = () => {
     handleBookExport()
   }
   else {
-    message.confirm({
+    dialog.confirm({
       msg: '成为会员，即可解锁数据导出无限制权益',
       title: '数据导出权益',
       confirmButtonText: '开通会员',
@@ -165,7 +165,7 @@ const onBookExport = () => {
 }
 
 const onBookDel = () => {
-  message.confirm({
+  dialog.confirm({
     msg: '该礼簿所有人情往来记录都将被删除，确定删除？',
     title: '删除礼簿',
   }).then(async () => {
@@ -334,7 +334,7 @@ function onMenuClick(e: any) {
               </div>
             </div>
           </div>
-          <wd-loadmore :state="loading ? 'loading' : isLastPage ? 'finished' : ''"
+          <wd-loadmore :state="loading ? 'loading' : isLastPage ? 'finished' : 'error'"
                        :loading-props="{ color: '#f87171' }"
           />
         </template>

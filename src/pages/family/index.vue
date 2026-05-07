@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useDialog, useNotify } from '@wot-ui/ui'
 import { storeToRefs } from 'pinia'
-import { useMessage, useNotify } from 'wot-design-uni'
 
 definePage({
   style: {
@@ -10,7 +10,7 @@ definePage({
 })
 
 const { showNotify } = useNotify()
-const message = useMessage()
+const dialog = useDialog()
 const { userFamilys, userInfo, isVip } = storeToRefs(useAuthStore())
 const actionSheetShow = ref(false)
 const actionSheetList = ref()
@@ -78,20 +78,17 @@ onShareAppMessage(() => {
     else {
       if (userFamilys.value.length >= 2 && !isVip.value) {
         reject(new Error('Family member limit exceeded'))
-        message
-          .confirm({
-            msg: '成为会员，即可解锁无限成员权益',
-            title: '家人共享权益',
-            confirmButtonText: '开通会员',
-            cancelButtonText: '稍后再说',
+        dialog.confirm({
+          msg: '成为会员，即可解锁无限成员权益',
+          title: '家人共享权益',
+          confirmButtonText: '开通会员',
+          cancelButtonText: '稍后再说',
+        }).then(() => {
+          uni.navigateTo({
+            url: '/pages/subscription/plan',
           })
-          .then(() => {
-            uni.navigateTo({
-              url: '/pages/subscription/plan',
-            })
-          })
-          .catch(() => {
-          })
+        }).catch(() => {
+        })
       }
       else {
         const familyId = userFamilys.value[0].familyId
@@ -122,7 +119,7 @@ onShareAppMessage(() => {
       <div v-if="userFamilys && userFamilys.length">
         <div class="rounded-2xl bg-white px-1 py-3 space-y-3">
           <template v-for="i in userFamilys" :key="i.userId">
-            <wd-cell :label="i.role" is-link center title-width="100%" @click="onClick(i)">
+            <wd-cell :label="i.role || '成员'" is-link center title-width="100%" @click="onClick(i)">
               <template #icon>
                 <div class="mr-3">
                   <uv-avatar :src="i.avatar" />

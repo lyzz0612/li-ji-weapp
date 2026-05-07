@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMessage } from 'wot-design-uni'
+import { useDialog } from '@wot-ui/ui'
 import { apiUserDelete } from '@/api/modules/user'
 
 definePage({
@@ -8,7 +8,7 @@ definePage({
   },
 })
 
-const message = useMessage()
+const dialog = useDialog()
 const loading = ref(false)
 
 const onConfirmDelete = async () => {
@@ -33,7 +33,7 @@ const onConfirmDelete = async () => {
 }
 
 const showDeleteConfirm = () => {
-  message.confirm({
+  dialog.confirm({
     title: '确认注销账号',
     msg: '账号注销后，您的所有数据将被永久删除，且无法恢复。\n\n确定要继续注销账号吗？',
     confirmButtonText: '确认注销',

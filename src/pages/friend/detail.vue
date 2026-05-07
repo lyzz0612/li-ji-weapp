@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { PopoverMenuItem } from '@wot-ui/ui/components/wd-popover/types'
+import { useDialog, useQueue } from '@wot-ui/ui'
 import dayjs from 'dayjs'
-import { useMessage, useQueue } from 'wot-design-uni'
 
 definePage({
   style: {
@@ -9,7 +10,7 @@ definePage({
 })
 
 const { closeOutside } = useQueue()
-const message = useMessage()
+const dialog = useDialog()
 const friend = ref<Api.Friend>({})
 
 const statsData = ref({
@@ -120,7 +121,7 @@ const onFriendEdit = () => {
   })
 }
 const onFriendDel = () => {
-  message.confirm({
+  dialog.confirm({
     msg: '该亲友所有人情往来记录都将被删除，确定删除？',
     title: '删除亲友',
   }).then(async () => {
@@ -139,7 +140,7 @@ const onAdd = () => {
     url: `/pages/gift/edit?friendId=${friend.value.id}&friendName=${friend.value.name}`,
   })
 }
-const menu = ref<Array<Record<string, any>>>([
+const menu = ref<PopoverMenuItem[]>([
   {
     iconClass: 'edit-1',
     content: '编辑亲友',

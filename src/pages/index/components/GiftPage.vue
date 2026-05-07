@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePagination } from 'alova/client'
 // import { storeToRefs } from 'pinia'
-// import { useMessage } from 'wot-design-uni'
+// import { useDialog } from '@wot-ui/ui'
 import { giftCategory } from '@/constants/app'
 
 const columns = [
@@ -15,7 +15,7 @@ const columns = [
 // let videoAd: any = null
 // const { isVip } = storeToRefs(useAuthStore())
 
-// const message = useMessage()
+// const dialog = useDialog()
 const search = reactive({
   icon: '',
 })
@@ -72,7 +72,7 @@ const onGiftExport = () => {
   //   handleGiftExport()
   // }
   // else {
-  //   message.confirm({
+  //   dialog.confirm({
   //     msg: '成为会员，即可解锁数据导出无限制权益',
   //     title: '数据导出权益',
   //     confirmButtonText: '开通会员',
@@ -144,7 +144,7 @@ defineExpose({
 
 <template>
   <div>
-    <wd-message-box />
+    <wd-dialog />
     <div class="mt-3 flex items-center">
       <div class="w-full flex items-center rounded-full bg-white p-1 px-2 text-gray" @click="onSearch()">
         <i class="i-hugeicons-search-02" />
@@ -218,7 +218,7 @@ defineExpose({
           <money-amount :money="i.money" />
         </div>
       </div>
-      <wd-loadmore :state="loading ? 'loading' : isLastPage ? 'finished' : ''"
+      <wd-loadmore :state="loading ? 'loading' : isLastPage ? 'finished' : 'error'"
                    :loading-props="{ color: '#f87171' }"
       />
     </div>

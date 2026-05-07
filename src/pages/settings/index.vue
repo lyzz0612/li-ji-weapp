@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { JSONStringify } from '@alova/shared'
+import { useNotify } from '@wot-ui/ui'
 import { storeToRefs } from 'pinia'
-import { useNotify } from 'wot-design-uni'
 
 definePage({
   style: {

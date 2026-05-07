@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useDialog, useToast } from '@wot-ui/ui'
 import { storeToRefs } from 'pinia'
-import { useMessage, useToast } from 'wot-design-uni'
 
 definePage({
   style: {
@@ -8,7 +8,7 @@ definePage({
   },
 })
 
-const message = useMessage()
+const dialog = useDialog()
 const toast = useToast()
 const { userFamilys } = storeToRefs(useAuthStore())
 const inviteData = ref({
@@ -22,7 +22,7 @@ onLoad((options: any) => {
 })
 const onAgree = async () => {
   if (userFamilys.value) {
-    message.alert({
+    dialog.alert({
       msg: '你当前已属于一个家庭账户，无法直接加入新的家庭。若要接受新邀请，请先退出当前家庭。',
       title: '提示',
       confirmButtonText: '我的家庭',

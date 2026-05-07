@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMessage } from 'wot-design-uni'
+import { useDialog } from '@wot-ui/ui'
 
 definePage({
   style: {
@@ -7,7 +7,7 @@ definePage({
   },
 })
 
-const message = useMessage()
+const dialog = useDialog()
 const dataSource = ref<Api.Gift>({})
 
 const loadData = async () => {
@@ -31,7 +31,7 @@ const onEdit = () => {
 }
 
 const onDel = () => {
-  message.confirm({
+  dialog.confirm({
     msg: '此操作无法恢复，确定删除？',
     title: '删除来往记录',
   }).then(async () => {
