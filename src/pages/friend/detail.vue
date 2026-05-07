@@ -35,7 +35,6 @@ const loadGifts = async () => {
       title: i.title,
       money: i.money,
       date: i.date,
-      lunarDate: i.lunarDate,
       year: dayjs(i.date).year(),
       bookId: i.bookId,
       attendance: i.attendance,
@@ -48,7 +47,6 @@ const loadGifts = async () => {
       title: i.title,
       money: i.money,
       date: i.date,
-      lunarDate: i.lunarDate,
       year: dayjs(i.date).year(),
       icon: i.icon,
       remarks: i.remarks,
@@ -141,11 +139,11 @@ const onAdd = () => {
 }
 const menu = ref<any[]>([
   {
-    iconClass: 'edit-1',
+    iconClass: 'edit',
     content: '编辑亲友',
   },
   {
-    iconClass: 'delete1',
+    iconClass: 'delete',
     content: '删除亲友',
   },
 ])
@@ -251,7 +249,7 @@ function onMenuClick(e: any) {
                   {{ item.remarks }}
                 </div>
                 <div class="mt-1 text-xs text-gray">
-                  <span>{{ item.lunarDate }}</span>
+                  <span>{{ generateLunarDate(item.date) }}</span>
                   <span class="ml-2">({{ item.date }}) </span>
                 </div>
               </div>

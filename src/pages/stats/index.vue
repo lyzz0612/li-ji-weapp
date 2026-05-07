@@ -16,8 +16,8 @@ const radarData = ref({})
 // 年份筛选
 const yearOptions = ['今年', '去年', '自定义']
 const selectedYear = ref('今年')
-const customStartDate = ref<number>()
-const customEndDate = ref<number>()
+const customStartDate = ref<number>(dayjs().subtract(1, 'year').startOf('year').valueOf())
+const customEndDate = ref<number>(dayjs().subtract(1, 'year').endOf('year').valueOf())
 
 // 获取日期范围参数
 function getDateParams() {
@@ -270,7 +270,7 @@ onShow(() => {
           <wd-segmented
             :value="selectedYear"
             :options="yearOptions"
-            custom-class="!bg-white"
+            custom-class="!bg-white rounded-2xl"
             @change="onYearChange"
           />
         </div>
@@ -383,6 +383,10 @@ onShow(() => {
 :deep(.wd-segmented__item.is-active) {
   background: #f87171;
   color: #fff;
-  border-radius: 12px;
+  border-radius: 1rem;
+}
+
+:deep(.wd-segmented) {
+  border-radius: 1rem;
 }
 </style>

@@ -13,15 +13,14 @@ const { closeOutside } = useQueue()
 let videoAd: any = null
 const { isVip } = storeToRefs(useAuthStore())
 const search = ref({
-  field: 'id',
+  field: 'friendName',
   order: 'asc',
   keyword: '',
 })
 const dialog = useDialog()
 const book = ref<Api.Book>({})
 const sortList = ref([
-  { label: '默认', field: 'id', value: 1 },
-  { label: '姓名', field: 'friendName', value: 0 },
+  { label: '姓名', field: 'friendName', value: 1 },
   { label: '金额', field: 'money', value: 0 },
 ])
 
@@ -182,15 +181,15 @@ const onBookDel = () => {
 
 const menu = ref<any[]>([
   {
-    iconClass: 'edit-1',
+    iconClass: 'edit',
     content: '编辑礼簿',
   },
   {
-    iconClass: 'cloud-download',
+    iconClass: 'download',
     content: '数据导出',
   },
   {
-    iconClass: 'delete1',
+    iconClass: 'delete',
     content: '删除礼簿',
   },
 ])
@@ -232,7 +231,7 @@ function onMenuClick(e: any) {
         </div>
 
         <div class="mt-1 text-sm text-gray">
-          <span>{{ book.lunarDate }}</span>
+          <span>{{ generateLunarDate(book.date) }}</span>
           <span class="ml-2">({{ book.date }}) </span>
         </div>
       </div>

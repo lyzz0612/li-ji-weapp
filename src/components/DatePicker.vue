@@ -1,17 +1,14 @@
 <script setup lang="ts">
 const props = defineProps<{
-  date: string
-  lunarDate: string
+  date: string | undefined
 }>()
 
 const emit = defineEmits<{
   (e: 'update:date', value: string): void
-  (e: 'update:lunarDate', value: string): void
 }>()
 
 const onDateChange = (e: any) => {
   emit('update:date', e.detail.value)
-  emit('update:lunarDate', generateLunarDate(new Date(e.detail.value)))
 }
 </script>
 
@@ -22,9 +19,9 @@ const onDateChange = (e: any) => {
         {{ props.date ? props.date.split('-')[2] : '--' }}
       </div>
       <div>
-        <div>{{ props.lunarDate }}</div>
-        <div class="text-sm text-gray">
-          {{ props.date }}
+        <div>{{ props.date }}</div>
+        <div class="text-xs text-gray">
+          {{ generateLunarDate(props.date) }}
         </div>
       </div>
       <div class="ml-auto">

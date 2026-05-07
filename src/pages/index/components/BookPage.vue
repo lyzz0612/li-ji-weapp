@@ -69,7 +69,7 @@ defineExpose({
               {{ i.date }}
             </div>
             <div>
-              {{ i.lunarDate }}
+              {{ generateLunarDate(i.date) }}
             </div>
           </div>
         </div>

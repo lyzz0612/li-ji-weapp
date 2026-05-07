@@ -8,7 +8,9 @@ definePage({
 })
 
 const loading = ref(false)
-const dataSource = ref<Api.BookItem>({})
+const dataSource = ref<Api.BookItem>({
+  moneyType: 0,
+})
 const formRef = ref<FormInstance>()
 
 // 模式：单条录入，批量录入
@@ -20,7 +22,7 @@ const bookId = ref<string>()
 const batchList = ref<Api.BookItem[]>([])
 const defaultMoney = ref<number>()
 const currentItem = ref<Api.BookItem>({ bookId: bookId.value, money: defaultMoney.value, attendance: 0 })
-const addFormRef = ref()
+const addFormRef = ref<any>()
 
 onLoad(async (option) => {
   if (option?.id) {
@@ -159,28 +161,29 @@ const presetMoney = [100, 200, 500, 800, 1000, 2000]
 
     <!-- 单条录入模式 -->
     <template v-if="mode === '单条录入'">
-      <div class="rounded-2xl bg-white p-3">
+      <div class="rounded-2xl bg-white p-2">
         <wd-form ref="formRef" layout="vertical" :model="dataSource" center :schema="rules">
-          <wd-form-item title="礼金类型" layout="horizontal" value-align="right">
-            <wd-radio-group v-model="dataSource.moneyType" shape="button" class="ms-auto line-height-none">
-              <wd-radio :value="0">
+          <wd-form-item title="礼金类型">
+            <wd-radio-group v-model="dataSource.moneyType" type="button" class="flex justify-between">
+              <wd-radio :value="0" class="w-full">
                 现金
               </wd-radio>
-              <wd-radio :value="1">
+              <wd-radio :value="1" class="w-full">
                 实物
               </wd-radio>
             </wd-radio-group>
           </wd-form-item>
           <wd-form-item title="金额" prop="money">
             <wd-input v-model="dataSource.money" placeholder="礼金或实物金额" type="number" :compact="false" />
-          </wd-form-item>
-          <div class="flex justify-around">
-            <div v-for="i in presetMoney" :key="i">
-              <wd-button size="small" type="info" @click="dataSource.money = i">
-                {{ i }}
-              </wd-button>
+            <div class="mt-2 flex justify-between">
+              <div v-for="i in presetMoney" :key="i">
+                <wd-button size="small" type="info" @click="dataSource.money = i">
+                  {{ i }}
+                </wd-button>
+              </div>
             </div>
-          </div>
+          </wd-form-item>
+
           <wd-form-item title="亲友" prop="friendName" required>
             <wd-input v-model="dataSource.friendName" :disabled="!!dataSource.id" placeholder="输入姓名，或点击右侧选择" :compact="false">
               <template #suffix>

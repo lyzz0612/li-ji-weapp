@@ -261,12 +261,12 @@ declare namespace Api {
      * ID
      * @type {string}
      */
-    id: string
+    id?: string
     /**
      * 标题
      * @type {string}
      */
-    title: string
+    title?: string
     /**
      * 成本
      * @type {number}
@@ -281,12 +281,7 @@ declare namespace Api {
      * 日期
      * @type {string}
      */
-    date: string
-    /**
-     * 农历
-     * @type {string}
-     */
-    lunarDate: string
+    date?: string
     /**
      * 出席人数
      * @type {number}
@@ -437,12 +432,6 @@ declare namespace Api {
      */
     date?: string
     /**
-     * 农历
-     * @type {string}
-     * @memberof BookItem
-     */
-    lunarDate?: string
-    /**
      * 亲友Id
      * @type {string}
      * @memberof BookItem
@@ -513,12 +502,6 @@ declare namespace Api {
      * @memberof Gift
      */
     date: string
-    /**
-     * 农历
-     * @type {string}
-     * @memberof Gift
-     */
-    lunarDate: string
     /**
      * 亲友Id
      * @type {string}

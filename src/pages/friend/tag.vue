@@ -61,7 +61,7 @@ const onDel = () => {
         添加
       </wd-button>
     </div>
-    <wd-popup v-model="popupShow" safe-area-inset-bottom position="bottom" custom-class="rounded-t-2xl">
+    <wd-popup v-model="popupShow" safe-area-inset-bottom custom-class="rounded-2xl w-2/3">
       <div class="px-5 pt-4 text-center text-lg">
         {{ dataSource.id ? '编辑' : '新建' }}标签
       </div>
@@ -70,12 +70,12 @@ const onDel = () => {
           <wd-input v-model="dataSource.name" label="标签名称" placeholder="请输入标签名称" />
         </wd-form>
         <div class="my-5 w-full flex space-x-4">
-          <div v-if="dataSource.id" class="w-40">
-            <wd-button plain round @click="onDel">
+          <div v-if="dataSource.id" class="w-1/3">
+            <wd-button variant="plain" round block @click="onDel">
               删除
             </wd-button>
           </div>
-          <div class="w-full">
+          <div class="w-2/3">
             <wd-button round block @click="onSave">
               保存
             </wd-button>

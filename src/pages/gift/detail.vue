@@ -101,7 +101,7 @@ const navigateToFriendDetailPage = () => {
           <div class="w-18 text-gray">
             农历
           </div>
-          <div>{{ dataSource.lunarDate }}</div>
+          <div>{{ generateLunarDate(dataSource.date) }}</div>
         </div>
         <div class="flex">
           <div class="w-18 text-gray">
@@ -130,12 +130,12 @@ const navigateToFriendDetailPage = () => {
       </div>
 
       <div class="mt-6 w-full flex space-x-4">
-        <div class="w-40">
-          <wd-button variant="plain" round @click="onDel">
+        <div class="w-1/3">
+          <wd-button variant="plain" round block @click="onDel">
             删除
           </wd-button>
         </div>
-        <div class="w-full">
+        <div class="w-2/3">
           <wd-button round block @click="onEdit">
             编辑
           </wd-button>

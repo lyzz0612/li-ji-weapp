@@ -211,7 +211,7 @@ defineExpose({
               {{ i.title }}<span v-if="i.remarks">({{ i.remarks }})</span>
             </div>
             <div class="mt-1 text-xs text-gray">
-              <span>{{ i.lunarDate }}</span>
+              <span>{{ generateLunarDate(i.date) }}</span>
               <span class="ml-2">({{ i.date }}) </span>
             </div>
           </div>

@@ -90,8 +90,12 @@ export function hasMourningWords(bookName: string | undefined | null) {
   })
 }
 
-export function generateLunarDate(date: Date) {
-  const solarDay = SolarDay.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate())
+export function generateLunarDate(date: Date | string | undefined) {
+  if (!date) {
+    return ''
+  }
+  const _date = typeof date === 'string' ? new Date(date) : date
+  const solarDay = SolarDay.fromYmd(_date.getFullYear(), _date.getMonth() + 1, _date.getDate())
   const lunarDay = solarDay.getLunarDay()
   const lunarMonth = lunarDay.getLunarMonth().getName()
   const lunarDayName = lunarDay.getName()

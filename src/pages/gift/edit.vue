@@ -20,7 +20,6 @@ const columns = Object.entries(giftCategory)
 const dataSource = ref<Api.Gift>({
   moneyType: 0,
   date: dayjs().format('YYYY-MM-DD'),
-  lunarDate: generateLunarDate(new Date()),
 })
 
 const loading = ref(false)
@@ -136,7 +135,7 @@ const rules: FormSchema = {
         </wd-form-item>
         <wd-form-item title="日期时间" prop="date" required>
           <div class="w-full">
-            <DatePicker v-model:date="dataSource.date" v-model:lunar-date="dataSource.lunarDate" />
+            <DatePicker v-model:date="dataSource.date" />
           </div>
         </wd-form-item>
         <wd-form-item title="礼金类型">
