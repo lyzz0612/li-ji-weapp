@@ -109,58 +109,53 @@ const userAvatar = computed(() => {
         </div>
 
         <div class="rounded-2xl bg-white p-2">
-          <wd-cell v-if="userFamilys && userFamilys.length" value="家人共享" center is-link to="/pages/family/index">
+          <wd-cell v-if="userFamilys && userFamilys.length" value="家人共享" center is-link to="/pages/family/index" size="large">
             <template #title>
               <uv-avatar-group :urls="userFamilys.map((i) => i.avatar)" gap="0.4" />
             </template>
           </wd-cell>
-          <wd-cell v-else title="开通家人共享" is-link to="/pages/family/index">
-            <template #icon>
-              <div class="i-hugeicons-home-12 mx-2 text-lg text-red" />
+          <wd-cell v-else title="开通家人共享" is-link to="/pages/family/index" size="large">
+            <template #prefix>
+              <div class="i-hugeicons-home-12 mr-2 text-lg text-red" />
             </template>
           </wd-cell>
         </div>
       </div>
 
       <div class="rounded-2xl bg-white p-2">
-        <wd-cell title="亲友标签" is-link to="/pages/friend/tag">
-          <template #icon>
-            <div class="i-hugeicons-tag-01 mx-2 text-lg text-red" />
+        <wd-cell title="亲友标签" is-link to="/pages/friend/tag" size="large">
+          <template #prefix>
+            <div class="i-hugeicons-tag-01 mr-2 text-lg text-red" />
           </template>
         </wd-cell>
 
-        <wd-cell title="择吉日" is-link to="/pages/calendar/index">
-          <template #icon>
-            <div class="i-hugeicons-calendar-01 mx-2 text-lg text-yellow" />
+        <wd-cell title="择吉日" is-link to="/pages/calendar/index" size="large">
+          <template #prefix>
+            <div class="i-hugeicons-calendar-01 mr-2 text-lg text-yellow" />
           </template>
         </wd-cell>
       </div>
-      <div class="rounded-2xl bg-white p-2 space-y-3">
-        <!-- <wd-cell title="支持礼记" is-link to="/pages/subscription/index">
-          <template #icon>
-            <div class="i-hugeicons-thumbs-up mx-2 text-lg text-red" />
-          </template>
-        </wd-cell> -->
-        <!-- <wd-cell title="夸夸礼记" is-link @click="openComment">
-          <template #icon>
-            <div class="i-hugeicons-thumbs-up mx-2 text-lg text-red" />
-          </template>
-        </wd-cell> -->
+      <div class="rounded-2xl bg-white p-2">
         <button class="reset-button" open-type="share">
-          <wd-cell is-link title="分享好友">
-            <template #icon>
-              <div class="i-hugeicons-share-01 pr-4 text-lg text-teal" />
+          <wd-cell is-link title="分享好友" size="large">
+            <template #prefix>
+              <div class="i-hugeicons-share-01 mr-2 text-lg text-teal" />
             </template>
           </wd-cell>
         </button>
-        <wd-cell title="常见问题" is-link to="/pages/faq/index">
-          <template #icon>
-            <div class="i-hugeicons-bubble-chat-question mx-2 text-lg text-blue" />
+        <wd-cell title="常见问题" is-link to="/pages/faq/index" size="large">
+          <template #prefix>
+            <div class="i-hugeicons-bubble-chat-question mr-2 text-lg text-blue" />
           </template>
         </wd-cell>
-        <wd-cell title="个人设置" is-link to="/pages/settings/index">
-          <template #icon>
-            <div class="i-hugeicons-settings-03 mx-2 text-lg text-gray" />
+        <wd-cell title="个人设置" is-link to="/pages/settings/index" size="large">
+          <template #prefix>
+            <div class="i-hugeicons-settings-03 mr-2 text-lg text-gray" />
+          </template>
+        </wd-cell>
+        <wd-cell title="关于礼记" is-link to="/pages/about/index" size="large">
+          <template #prefix>
+            <div class="i-hugeicons-information-circle mr-2 text-lg text-green" />
           </template>
         </wd-cell>
       </div>

@@ -66,7 +66,7 @@ const navigateToFriendDetailPage = () => {
           </div>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-1 text-sm">
-          <wd-tag v-for="(tag, index) in dataSource.friendTagList" :key="index" plain type="primary">
+          <wd-tag v-for="(tag, index) in dataSource.friendTagList" :key="index" variant="light" type="primary" round>
             {{ tag }}
           </wd-tag>
         </div>

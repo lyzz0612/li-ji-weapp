@@ -9,6 +9,17 @@ definePage({
   },
 })
 
+// '结婚': 'i-bi-postcard-heart',
+// '宝宝': 'i-hugeicons-baby-01',
+// '周岁': 'i-icon-park-outline-baby-feet',
+// '乔迁': 'i-tabler-home-move',
+// '生日': 'i-mingcute-cake-line',
+// '升学': 'i-hugeicons-student',
+// '福寿': 'i-mingcute-blessing-line',
+// '探望': 'i-healthicons-fruits-outline',
+// '白事': 'i-tabler-candle',
+// '其他': 'i-mingcute-wallet-2-line',
+
 const money = ref({
   amount: 0,
   type: '送礼',
@@ -139,29 +150,33 @@ const rules: FormSchema = {
           </div>
         </wd-form-item>
         <wd-form-item title="礼金类型">
-          <wd-radio-group v-model="dataSource.moneyType" type="button" class="flex justify-between">
-            <wd-radio :value="0" class="w-full">
-              现金
-            </wd-radio>
-            <wd-radio :value="1" class="w-full">
-              实物
-            </wd-radio>
+          <wd-radio-group v-model="dataSource.moneyType" type="button">
+            <div class="flex justify-between">
+              <wd-radio :value="0" class="w-full">
+                现金
+              </wd-radio>
+              <wd-radio :value="1" class="w-full">
+                实物
+              </wd-radio>
+            </div>
           </wd-radio-group>
         </wd-form-item>
         <wd-form-item title="支付方式">
-          <wd-radio-group v-model="dataSource.payway" type="button" class="flex justify-between">
-            <wd-radio value="支付宝">
-              支付宝
-            </wd-radio>
-            <wd-radio value="微信">
-              微信
-            </wd-radio>
-            <wd-radio value="现金">
-              现金
-            </wd-radio>
-            <wd-radio value="其他">
-              其他
-            </wd-radio>
+          <wd-radio-group v-model="dataSource.payway" type="button">
+            <div class="flex justify-between">
+              <wd-radio value="支付宝">
+                支付宝
+              </wd-radio>
+              <wd-radio value="微信">
+                微信
+              </wd-radio>
+              <wd-radio value="现金">
+                现金
+              </wd-radio>
+              <wd-radio value="其他">
+                其他
+              </wd-radio>
+            </div>
           </wd-radio-group>
         </wd-form-item>
         <wd-form-item title="金额" prop="money.amount">

@@ -14,10 +14,8 @@ const roseData = ref({})
 const radarData = ref({})
 
 // 年份筛选
-const yearOptions = ['今年', '去年', '自定义']
+const yearOptions = ['今年', '去年', '全部']
 const selectedYear = ref('今年')
-const customStartDate = ref<number>(dayjs().subtract(1, 'year').startOf('year').valueOf())
-const customEndDate = ref<number>(dayjs().subtract(1, 'year').endOf('year').valueOf())
 
 // 获取日期范围参数
 function getDateParams() {
@@ -33,40 +31,9 @@ function getDateParams() {
         startDate: now.subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
         endDate: now.subtract(1, 'year').endOf('year').format('YYYY-MM-DD'),
       }
-    case '自定义':
-      if (customStartDate.value && customEndDate.value) {
-        return {
-          startDate: dayjs(customStartDate.value).startOf('month').format('YYYY-MM-DD'),
-          endDate: dayjs(customEndDate.value).endOf('month').format('YYYY-MM-DD'),
-        }
-      }
-      return undefined
+    case '全部':
     default:
       return undefined
-  }
-}
-
-// 选择年份
-function onYearChange({ value }: { value: string }) {
-  selectedYear.value = value
-  if (value !== '自定义') {
-    loadData()
-  }
-}
-
-// 开始日期确认
-function onStartConfirm({ value }: { value: number }) {
-  customStartDate.value = value
-  if (customStartDate.value && customEndDate.value) {
-    loadData()
-  }
-}
-
-// 结束日期确认
-function onEndConfirm({ value }: { value: number }) {
-  customEndDate.value = value
-  if (customStartDate.value && customEndDate.value) {
-    loadData()
   }
 }
 
@@ -261,96 +228,74 @@ onShow(() => {
   <div class="bg-contain bg-no-repeat" :style="{ 'background-image': `url(${serviceUrl}/oss/assets/bg/bg_friend.png)` }">
     <safe-area-inset-top />
     <div class="mx-3 space-y-3">
-      <!-- 标题和筛选 -->
-      <div class="flex items-center justify-between">
-        <div class="text-2xl text-red font-bold">
-          统计
-        </div>
-        <div class="w-52">
+      <div class="text-2xl text-red font-bold">
+        统计
+      </div>
+      <div class="rounded-2xl bg-white p-3">
+        <div class="mb-3 ms-auto w-52">
           <wd-segmented
-            :value="selectedYear"
+            v-model:value="selectedYear"
             :options="yearOptions"
-            custom-class="!bg-white rounded-2xl"
-            @change="onYearChange"
+            custom-class="rounded-2xl"
+            @change="loadData"
           />
         </div>
-      </div>
-
-      <!-- 自定义日期选择 -->
-      <div v-if="selectedYear === '自定义'" class="rounded-2xl bg-white px-4">
-        <div class="w-full flex items-center gap-3">
-          <wd-datetime-picker
-            v-model="customStartDate"
-            align-right
-            type="year-month"
-            placeholder="开始时间"
-            @confirm="onStartConfirm"
-          />
-          <span class="mx-auto text-gray-400">至</span>
-          <wd-datetime-picker
-            v-model="customEndDate"
-            align-right
-            type="year-month"
-            placeholder="结束时间"
-            @confirm="onEndConfirm"
-          />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-5 rounded-2xl bg-white p-5">
-        <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
-          <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-red">
-            <div class="i-tabler-moneybag-plus m-auto h-6 w-6 text-white" />
-          </div>
-          <div>
-            <div class="text-lg font-bold">
-              {{ statsData.inTotal }}
+        <div class="grid grid-cols-2 gap-5">
+          <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
+            <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-red">
+              <div class="i-tabler-moneybag-plus m-auto h-6 w-6 text-white" />
             </div>
-            <div class="text-xs text-gray">
-              收礼
+            <div>
+              <div class="text-lg font-bold">
+                {{ statsData.inTotal }}
+              </div>
+              <div class="text-xs text-gray">
+                收礼
+              </div>
             </div>
           </div>
-        </div>
-        <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
-          <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-teal">
-            <div class="i-tabler-moneybag-minus m-auto h-6 w-6 text-white" />
-          </div>
-          <div>
-            <div class="text-lg font-bold">
-              {{ statsData.outTotal }}
+          <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
+            <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-teal">
+              <div class="i-tabler-moneybag-minus m-auto h-6 w-6 text-white" />
             </div>
-            <div class="text-xs text-gray">
-              送礼
-            </div>
-          </div>
-        </div>
-        <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
-          <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-purple">
-            <div class="i-carbon-pedestrian-family m-auto h-6 w-6 text-white" />
-          </div>
-          <div>
-            <div class="text-lg font-bold">
-              {{ statsData.inCount + statsData.outCount }}
-            </div>
-            <div class="text-xs text-gray">
-              往来次数
+            <div>
+              <div class="text-lg font-bold">
+                {{ statsData.outTotal }}
+              </div>
+              <div class="text-xs text-gray">
+                送礼
+              </div>
             </div>
           </div>
-        </div>
-        <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
-          <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-blue">
-            <div class="i-mingcute-wallet-2-line m-auto h-6 w-6 text-white" />
-          </div>
-          <div>
-            <div class="text-lg font-bold">
-              {{ statsData.inTotal + statsData.outTotal }}
+          <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
+            <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-purple">
+              <div class="i-carbon-pedestrian-family m-auto h-6 w-6 text-white" />
             </div>
-            <div class="text-xs text-gray">
-              收支差
+            <div>
+              <div class="text-lg font-bold">
+                {{ statsData.inCount + statsData.outCount }}
+              </div>
+              <div class="text-xs text-gray">
+                往来次数
+              </div>
+            </div>
+          </div>
+          <div class="h-16 w-full flex items-center rounded-xl bg-gray-100">
+            <div class="mx-3 h-10 w-10 flex flex-shrink-0 rounded-full bg-blue">
+              <div class="i-mingcute-wallet-2-line m-auto h-6 w-6 text-white" />
+            </div>
+            <div>
+              <div class="text-lg font-bold">
+                {{ statsData.inTotal + statsData.outTotal }}
+              </div>
+              <div class="text-xs text-gray">
+                收支差
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="pt-2 font-bold">
         收支趋势
       </div>

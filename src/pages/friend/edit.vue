@@ -48,6 +48,7 @@ const rules: FormSchema = {
     return new Set(['name']).has(path)
   },
 }
+const tagPickerVisible = ref(false)
 </script>
 
 <template>
@@ -63,10 +64,11 @@ const rules: FormSchema = {
         <wd-form-item title="标签" prop="tagList">
           <div class="w-full">
             <wd-select-picker
-              v-model="dataSource.tagList"
+              v-model="dataSource.tagList!"
+              v-model:visible="tagPickerVisible"
               :columns="useAuthStore().friendTagPickerColumns"
             />
-            <div class="flex items-center rounded-lg bg-[#F2F3F5] p-2">
+            <div class="flex items-center rounded-lg bg-[#F2F3F5] p-2" @click="tagPickerVisible = true">
               <div class="friend-tag-trigger__value" :class="{ 'is-placeholder': !dataSource.tagList?.length }">
                 {{ dataSource.tagList?.length ? dataSource.tagList.join('、') : '请选择标签' }}
               </div>

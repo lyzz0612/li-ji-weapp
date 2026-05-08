@@ -109,7 +109,7 @@ onLoad(async () => {
 
 <template>
   <div>
-    <div class="mx-3 h-full pb-16 space-y-3">
+    <div class="mx-3 h-full pb-32 space-y-3">
       <div
         class="bg-contain bg-no-repeat text-center"
         :style="{ 'background-image': `url(${serviceUrl}/oss/assets/subscription/congratulate.webp)` }"

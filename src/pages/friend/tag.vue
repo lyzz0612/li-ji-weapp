@@ -29,6 +29,14 @@ const openPopup = (item?: Api.FriendTag) => {
 }
 
 const onSave = async () => {
+  if (!dataSource.value.name) {
+    uni.showToast({
+      title: '请输入标签名称',
+      icon: 'none',
+    })
+    return
+  }
+
   dataSource.value.id ? await apiFriendTagPut(dataSource.value) : await apiFriendTagPost(dataSource.value)
   showNotify({ type: 'success', message: '保存成功' })
   popupShow.value = false
@@ -61,7 +69,7 @@ const onDel = () => {
         添加
       </wd-button>
     </div>
-    <wd-popup v-model="popupShow" safe-area-inset-bottom custom-class="rounded-2xl w-2/3">
+    <wd-popup v-model="popupShow" safe-area-inset-bottom custom-class="rounded-2xl w-3/4">
       <div class="px-5 pt-4 text-center text-lg">
         {{ dataSource.id ? '编辑' : '新建' }}标签
       </div>
@@ -70,12 +78,12 @@ const onDel = () => {
           <wd-input v-model="dataSource.name" label="标签名称" placeholder="请输入标签名称" />
         </wd-form>
         <div class="my-5 w-full flex space-x-4">
-          <div v-if="dataSource.id" class="w-1/3">
+          <div v-if="dataSource.id">
             <wd-button variant="plain" round block @click="onDel">
               删除
             </wd-button>
           </div>
-          <div class="w-2/3">
+          <div class="w-full">
             <wd-button round block @click="onSave">
               保存
             </wd-button>
