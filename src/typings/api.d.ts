@@ -587,6 +587,14 @@ declare namespace Api {
     h5Url: string
   }
 
+  interface XPayGoodsTransactionOutput {
+    outTradeNumber?: string
+    mode: 'short_series_goods' | 'short_series_coin'
+    signData: string
+    paySig: string
+    signature: string
+  }
+
   interface SubscriptionPlan {
     /**
      * 雪花Id
@@ -594,6 +602,12 @@ declare namespace Api {
      * @memberof SubscriptionPlan
      */
     id?: string
+    /**
+     * 商品id
+     * @type {string}
+     * @memberof SubscriptionPlan
+     */
+    productId: string
     /**
      * 标题
      * @type {string}

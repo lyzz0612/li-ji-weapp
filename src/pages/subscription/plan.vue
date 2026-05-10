@@ -9,57 +9,84 @@ definePage({
     navigationBarTitleText: '',
   },
 })
-
+const planId = 1
 const serviceUrl = import.meta.env.VITE_SERVICE_URL
 const dialog = useDialog()
 const loading = ref(false)
 const { userInfo } = storeToRefs(useAuthStore())
 const subscriptionPlan = ref<Api.SubscriptionPlan>()
-const platform = ref(uni.getDeviceInfo().platform)
 
 const loadSubscriptionPlanData = async () => {
-  subscriptionPlan.value = await apiSubscriptionPlanGet({ planId: 1 })
+  subscriptionPlan.value = await apiSubscriptionPlanGet({ planId })
 }
 
-const jsapiPay = async () => {
+const syncMemberStatusAfterPayment = async (outTradeNumber: string) => {
+  userInfo.value = await apiUserMemberStatusPut({
+    outTradeNumber,
+  }).catch(() => undefined)
+}
+
+const xPay = async () => {
   loading.value = true
-  const { singInfo, outTradeNumber } = await apiSubscriptionCreateJsapiPayPost({
-    planId: 1,
-  })
-  wx.requestPayment({
-    ...singInfo,
-    async success() {
-      uni.showToast({
-        title: '支付成功 谢谢！',
-        icon: 'success',
-      })
-      userInfo.value = await apiUserMemberStatusPut({
-        outTradeNumber,
-      })
-      uni.redirectTo({
-        url: '/pages/subscription/index',
-      })
-    },
-    fail() {
-      uni.showToast({
-        title: '支付取消 下次一定！',
-        icon: 'error',
-      })
-    },
-    complete() {
-      loading.value = false
-    },
-  })
+  try {
+    const { singInfo, outTradeNumber } = await apiSubscriptionCreateXPayPost({
+      planId,
+    })
+
+    wx.requestVirtualPayment({
+      mode: singInfo.mode,
+      signData: singInfo.signData as unknown as WechatMiniprogram.SignData,
+      paySig: singInfo.paySig,
+      signature: singInfo.signature,
+      async success() {
+        uni.showToast({
+          title: '支付成功 谢谢！',
+          icon: 'success',
+        })
+        await syncMemberStatusAfterPayment(outTradeNumber)
+        uni.redirectTo({
+          url: '/pages/subscription/index',
+        })
+      },
+      fail({ errCode }) {
+        uni.showToast({
+          title: errCode === -2 ? `支付取消` : `支付失败(${errCode})`,
+          icon: 'none',
+        })
+      },
+      complete() {
+        loading.value = false
+      },
+    })
+  }
+  catch {
+    loading.value = false
+    uni.showToast({
+      title: '创建支付订单失败，请稍后再试',
+      icon: 'none',
+    })
+  }
 }
 
 const h5Pay = async () => {
   loading.value = true
-  const { singInfo } = await apiSubscriptionCreateH5PayPost({
-    planId: 1,
-  })
-  uni.navigateTo({
-    url: singInfo.h5Url,
-  })
+  try {
+    const { singInfo } = await apiSubscriptionCreateH5PayPost({
+      planId,
+    })
+    uni.navigateTo({
+      url: singInfo.h5Url,
+    })
+  }
+  catch {
+    uni.showToast({
+      title: '创建支付订单失败，请稍后再试',
+      icon: 'none',
+    })
+  }
+  finally {
+    loading.value = false
+  }
 }
 
 const couponPay = async () => {
@@ -89,15 +116,6 @@ const couponPay = async () => {
   })
 }
 
-let clickCount = 0
-
-const fk_apple = () => {
-  clickCount++
-  if (clickCount > 3) {
-    // platform.value = 'fk_apple'
-  }
-}
-
 const price = computed(() => {
   return (subscriptionPlan.value?.price ?? 0) / 100
 })
@@ -109,7 +127,7 @@ onLoad(async () => {
 
 <template>
   <div>
-    <div class="mx-3 h-full pb-32 space-y-3">
+    <div class="mx-3 h-full pb-[152px] space-y-3">
       <div
         class="bg-contain bg-no-repeat text-center"
         :style="{ 'background-image': `url(${serviceUrl}/oss/assets/subscription/congratulate.webp)` }"
@@ -158,12 +176,7 @@ onLoad(async () => {
     <div class="fixed bottom-0 w-full rounded-t-xl bg-white pt-6">
       <div class="mx-3">
         <!-- #ifdef MP-WEIXIN -->
-        <wd-button v-if="platform === 'ios'" round block loading-color="#F87171" pen-type="contact" @click="fk_apple">
-          <div class="font-bold">
-            暂不支持在 iOS 系统上使用
-          </div>
-        </wd-button>
-        <wd-button v-else round block :loading="loading" loading-color="#F87171" @click="jsapiPay">
+        <wd-button round block :loading="loading" loading-color="#F87171" @click="xPay">
           <div class="font-bold">
             <span>￥</span>
             <span>{{ price }}</span>

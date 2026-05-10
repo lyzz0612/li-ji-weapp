@@ -11,3 +11,7 @@ export function apiSubscriptionCreateJsapiPayPost(data: any) {
 export function apiSubscriptionCreateH5PayPost(data: any) {
   return request.Post<Api.WechatPayTransactionOutput<Api.WechartPayTransactionH5SingInfo>>('subscription/h5-pay', data)
 }
+
+export function apiSubscriptionCreateXPayPost(data: any) {
+  return request.Post<Api.WechatPayTransactionOutput<Api.XPayGoodsTransactionOutput>>('subscription/x-pay', data)
+}
